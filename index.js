@@ -1,8 +1,10 @@
 import dotenv from 'dotenv/config';
 import express from 'express';
+import db from './config/mongoose.js';
 
 const app = express();
 const port = process.env.port || 5000;
+db();
 
 app.listen(port, (err) => {
     if(err) {
