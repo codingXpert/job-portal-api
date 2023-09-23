@@ -1,30 +1,27 @@
 import User from '../models/user.js';
 
-export const registerController = async (req, res) => {
+export const registerController = async (req, res, next) => {
     try {
         const {firstName, lastName, email, password} = req.body;
     if(!firstName){
-        return res.status(400).send({success: false, message: 'plz provide first name'});
+        next('first name is required');
     }
 
     if(!lastName){
-        return res.status(400).send({success: false, message: 'plz provide last name'});
+        next('last name is required');
     }
 
     if(!email){
-        return res.status(400).send({success: false, message: 'plz provide email'});
+        next('email is required');
     }
 
     if(!password){
-        return res.status(400).send({success: false, message: 'plz provide first password'});
+        next('password is required and should be greater than six characters');
     }
 
     const existingUser = await User.findOne({ email });
     if(existingUser) {
-        return res.status(200).send({
-            success: false,
-            message: 'Email already registered plz login'
-        });
+        next('Email already registered plz login');
     }
 
     const newUser = await User.create({firstName, lastName, email, password});
@@ -34,12 +31,7 @@ export const registerController = async (req, res) => {
         newUser
     });
     } catch (error) {
-        console.log(error);
-        return res.status(400).send({
-            success: false,
-            message: 'Error while registration',
-            error: error
-        });
+        next(error);
     }
     
 }
