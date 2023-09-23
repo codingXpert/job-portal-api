@@ -1,7 +1,6 @@
 import User from '../models/user.js';
 
 export const registerController = async (req, res, next) => {
-    try {
         const {firstName, lastName, email, password} = req.body;
     if(!firstName){
         next('first name is required');
@@ -29,9 +28,5 @@ export const registerController = async (req, res, next) => {
         success: true,
         message: 'User Created Successfully',
         newUser
-    });
-    } catch (error) {
-        next(error);
-    }
-    
+    });  
 }
