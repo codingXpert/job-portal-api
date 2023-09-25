@@ -39,3 +39,17 @@ export const loginController = async(req, res, next) => {
         token
     });
 }
+
+
+export const updateUserController = async (req, res, next) => {
+  const { firstName, email, lastName, location } = req.body;
+  if (!firstName || !email || !lastName || !location) {
+    next("Please Provide All Fields");
+  }
+  const user = await User.findOneAndUpdate({ _id: req.user.userId }, req.body, { new: true });
+  const token = user.createJWT();
+  res.status(200).json({
+    user,
+    token,
+  });
+};

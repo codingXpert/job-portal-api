@@ -38,6 +38,7 @@ const userSchema = new mongoose.Schema(
 
 //middleware 
 userSchema.pre('save', async function () {
+  if(!this.isModified) return // isModified is an inbuilt keyword(if the password is modified return & don't save the updated data)
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt)
 });
