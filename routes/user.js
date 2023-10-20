@@ -15,8 +15,8 @@ const limiter = rateLimit({ // applies access limit to any route/API
 })
 
 
-router.post('/register', registerController);
-router.post('/login', loginController);
+router.post('/register', limiter, registerController);
+router.post('/login', limiter, loginController);
 router.put('/update', userAuth, updateUserController);
 
 export default router
